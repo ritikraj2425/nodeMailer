@@ -11,18 +11,15 @@ const sendMail = require('./controller/mailer');
 
 app.post('/sendEmail', async (req, res) => {
     try {
-
     const { to, subject, content } = req.body;
-
     if (!to || !subject || !content) {
-        return res.status(400).send("Missing email, subject, or content");
+        return res.status(400).json({error: "Missing email, subject, or content"});
     }
-
         await sendMail(to, subject, content);
-        res.status(200).send("Email sent successfully");
+        res.status(200).json({message: "Email sent successfully"});
     } catch (error) {
-        console.error("Error sending email:", error);
-        res.status(500).send("Failed to send email");
+
+        res.status(500).send({error: "Failed to send email"});
     }
 });
 
